@@ -24,20 +24,20 @@ jobs:
 
     - name: Install dependencies
       run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
-          
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
     - name: Run tests
-      run: pytest tests/test_main.py -v -s --alluredir allure-results
+      run: pytest tests/test_main.py -v -s --alluredir=allure-results
 
     - name: Generate Allure report
-      run: allure generate allure-results --clean -o allure-report
+      run: |
+        allure generate allure-results --clean -o allure-report
+        zip -r allure-report.zip allure-report
 
     - name: Send Allure report to Telegram
       env:
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       run: |
-        REPORT_FILE="allure-report/index.html"
-        curl -F "document=@${REPORT_FILE}" \
-             "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument"
-
+        curl -F chat_id=$CHAT_ID -F document=@allure-report.zip "https://api.telegram.org/bot$BOT_TOKEN/sendDocument"
