@@ -102,6 +102,3 @@ def get_remont_store(cookie=None):
 
 
 get_remont_store()
-
-
-
