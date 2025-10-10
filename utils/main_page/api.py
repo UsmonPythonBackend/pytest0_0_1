@@ -63,3 +63,45 @@ def add_to_cart(cookie, offer_id: str, condition_id: id, quantity=1):
     return response
 
 
+def get_smart_home(cookie=None):
+    if cookie is None:
+        response = requests.get(url=f"{base_url}/web/client/filters/categories/umniy-dom/brands")
+    else:
+        headers = {
+            "Cookie": f"cart={cookie};"
+        }
+        response = requests.get(url=f"{base_url}/web/client/filters/categories/umniy-dom/brands", headers=headers)
+    return response
+
+get_smart_home()
+
+
+def get_sports_shop(cookie=None):
+    if cookie is None:
+        response = requests.get(url=f"{base_url}/web/client/filters/categories/sportivnie-tovari/brands")
+    else:
+        headers = {
+            "Cookie": f"cart={cookie};"
+        }
+        response = requests.get(url=f"{base_url}/web/client/filters/categories/sportivnie-tovari/brands", headers=headers)
+    return response
+
+get_sports_shop()
+
+
+def get_remont_store(cookie=None):
+    if cookie is None:
+        response = requests.get(url=f"{base_url}/web/client/filters/categories/stroiteljstvo-i-remont/brands")
+    else:
+        headers = {
+            "Cookie": f"cart={cookie};"
+        }
+        response = requests.get(url=f"{base_url}/web/client/filters/categories/stroiteljstvo-i-remont/brands",
+                                headers=headers)
+    return response
+
+
+get_remont_store()
+
+
+
