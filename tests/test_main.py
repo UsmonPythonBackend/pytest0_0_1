@@ -4,7 +4,7 @@ import requests
 import json
 import pytest
 import allure
-from utils.main_page.api import get_active_items, get_cart, add_to_cart, search_items
+from utils.main_page.api import get_active_items, get_cart, add_to_cart, get_smart_home, get_sports_shop, get_remont_store
 
 
 
@@ -39,39 +39,47 @@ def test_get_session_id():
 
     cookie = response.cookies.get_dict()['cart']
     assert isinstance(cookie, str), f'Тип куки на самом деле {type(cookie)}'
-#
-# @allure.parent_suite('Главная страница')
-# @allure.suite('Проверка добавления товаров в корзину у незарегистрированного пользователя')
-# @allure.title('Добавление товара в корзину')
+
+@allure.parent_suite('Главная страница')
+@allure.suite('Проверка добавления товаров в корзину у незарегистрированного пользователя')
+@allure.title('Добавление товара в корзину')
 def test_add_item():
     response = add_to_cart(cookie=cookie, offer_id=offer_id, condition_id=condition_id)
     assert response.status_code == 200
-
 
 
     response = response.json()
     print(json.dumps(response, indent=4))
 
 
+@allure.parent_suite('Главная страница')
+@allure.suite('Проверка перехода в раздел умный дом')
+@allure.title("Получение session_id из cookie")
+def test_get_smart_home():
+    global cookie
+
+    response = get_smart_home()
+
+    assert response.status_code == 200
 
 
-# @pytest.mark.parametrize('item', ['iphone', 'samsung', 'xiaomi'])
-# def test_search(item):
-#     search_body = {
-#         "query": item
-#     }
-#     response = requests.post(url=search_url, json=search_body)
-#     res_json = response.json()
-#
-#     items_list = res_json["items"]
-#
-#     print(f'{items_list}\n\n')
-#
-#     assert response.status_code == 200
-#     assert len(items_list) > 0 , "Ничего нет"
-#
+@allure.parent_suite('Главная страница')
+@allure.suite('Проверка перехода в спортивные товары')
+@allure.title("Получение session_id из cookie")
+def test_get_sport_shop():
+    global cookie
 
-#    print(json.dumps(res_json, indent=2))
+    response = get_sports_shop()
 
-# def url_generator(slug):
-#     return
+    assert response.status_code == 200
+
+
+@allure.parent_suite('Главная страница')
+@allure.suite('Проверка перехода в строительство и ремонт')
+@allure.title("Получение session_id из cookie")
+def test_get_remont_store():
+    global cookie
+
+    response = get_remont_store()
+
+    assert response.status_code == 200
